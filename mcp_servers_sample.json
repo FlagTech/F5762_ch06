@@ -1,0 +1,17 @@
+{
+    "mcpServers": {
+        "spotify": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "C:/temp/mcp_test",
+                "run",
+                "server_spotify.py"
+            ],
+            "env": {
+                "SPOTIFY_CLIENT_ID": "你的 Client id",
+                "SPOTIFY_CLIENT_SECRET": "你的 Client secret"
+            }
+        }
+    }
+}
