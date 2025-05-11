@@ -1,5 +1,30 @@
 {
     "mcpServers": {
+        "shell_helper": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "C:/temp/mcp_test",
+                "run",
+                "server_shell_helper.py"
+            ]
+        },
+         "google_search": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "C:/temp/mcp_test",
+                "run",
+                "server_google_search.py"
+            ]
+        },
+        "sse_google_search": {
+            "url": "http://localhost:8000/sse"
+        },
+        "fetch": {
+            "command": "uvx",
+            "args": ["mcp-server-fetch"]
+        },
         "spotify": {
             "command": "uv",
             "args": [

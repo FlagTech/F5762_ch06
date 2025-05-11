@@ -24,13 +24,14 @@ async def shell_helper(platform: str,
                        shell_command: str
 ) -> str:
     """可以依據 platform 指定的平作業系統平台執行：
-       Windows 下 powershell 指令或是 Linux/MacOS 下 
+       Windows powershell 指令或是 Linux/MacOS  
        shell 指令的工具函式
 
     Args:
-        platform (str): 作業系統平台，"Windows" 為 Windows, 
+        platform (str): 作業系統平台，"Windows" 為 Windows， 
                                    "*nix" 為 Linux 或 MacOS
-        shell_command (str): 要執行的指令
+        shell_command (str): 要執行的指令，Windows 平台只接受 
+                             powershell 指令
     """
 
     # 啟動子行程

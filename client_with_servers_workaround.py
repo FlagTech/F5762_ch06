@@ -66,11 +66,10 @@ class MCPClient:
         """釋放資源"""
         await self.exit_stack.aclose()
 
-async def get_reply_text(clients, query, hist):
+async def get_reply_text(clients, query, prev_id):
     """單次問答"""
     
-    # 自行處理對話記錄
-    messages = hist + [{"role": "user", "content": query}]
+    messages = [{"role": "user", "content": query}]
     # 把 clients 中個別項目的 tools 串接在一起
     tools = []
     for client in clients:
@@ -83,13 +82,14 @@ async def get_reply_text(clients, query, hist):
             model="gpt-4.1",
             input=messages,
             tools=tools,
-            store=False # 不儲存對話紀錄
+            previous_response_id=prev_id,
         )
 
         # 處理回應並執行工具
-        tool_results = []
         final_text = []
+        messages = []
 
+        prev_id = response.id
         for output in response.output:
             if output.type == 'message': # 一般訊息
                 final_text.append(output.content[0].text)
@@ -108,28 +108,24 @@ async def get_reply_text(clients, query, hist):
                 result = await client.session.call_tool(
                     tool_name, tool_args
                 )
-                tool_results.append(
-                    {"call": tool_name, "result": result}
-                )
                 print(f"{result.content[0].text}")
                 print('-' * 20)
 
-                messages.append(output)
                 messages.append({
                     # 建立可傳回函式執行結果的字典
                     "type": "function_call_output", # 設為工具輸出類型的訊息
                     "call_id": output.call_id, # 叫用函式的識別碼
                     "output": result.content[0].text # 函式傳回值
                 })
-        if tool_results == []:
+        if messages == []:
             break
-    return "\n".join(final_text)
+    return "\n".join(final_text), prev_id
 
 async def chat_loop(clients):
     """聊天迴圈"""
     print("直接按 ↵ 可結束對話")
 
-    hist = []
+    prev_id = None
     while True:
         try:
             query = input(">>> ").strip()
@@ -137,13 +133,10 @@ async def chat_loop(clients):
             if query == '':
                 break
 
-            reply = await get_reply_text(
-                clients, query, hist
+            reply, prev_id = await get_reply_text(
+                clients, query, prev_id
             )
             print(reply)
-            hist += [{"role": "user", "content": query}]
-            hist += [{"role": "assistant", "content": reply}]
-            hist = hist[-6:] # 只保留最近的 10 筆對話紀錄
 
         except Exception as e:
             print(f"\nError: {str(e)}")
