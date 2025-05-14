@@ -1,7 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 from googlesearch import search
 
-mcp = FastMCP("shell_helper")
+mcp = FastMCP("google_search")
 
 @mcp.tool()
 async def google_res(keyword: str, num_results: int = 5) -> str:

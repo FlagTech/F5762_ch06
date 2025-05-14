@@ -17,7 +17,6 @@ sp = spotipy.Spotify(
 
 mcp = FastMCP("spotify")
 
-
 @mcp.tool()
 async def spotify_devices() -> str:
     """可以查詢你的所有 spotify 裝置，取得個別裝置的 id 與名稱"""
@@ -101,5 +100,5 @@ async def spotify_now_playing() -> str:
     })  
 
 if __name__ == "__main__":
-    # Initialize and run the server
+    # 執行 MCP 伺服器
     mcp.run(transport="stdio")
