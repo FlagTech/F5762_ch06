@@ -54,7 +54,11 @@ class MCPClient:
             "type": "function",
             "name": tool.name,
             "description": tool.description,
-            "parameters": tool.inputSchema
+            "parameters": (
+                tool.inputSchema 
+                if "properties" in tool.inputSchema 
+                else tool.inputSchema | {'properties': {}}
+            )
         } for tool in tools]
         self.tool_names = [tool.name for tool in tools]
 

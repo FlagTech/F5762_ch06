@@ -37,6 +37,9 @@
                 "SPOTIFY_CLIENT_ID": "你的 Client id",
                 "SPOTIFY_CLIENT_SECRET": "你的 Client secret"
             }
+        },
+        "gitmcp": {
+            "url": "https://gitmcp.io/idosal/git-mcp"
         }
     }
 }
