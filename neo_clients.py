@@ -5,7 +5,6 @@ from mcp.client.streamable_http import streamablehttp_client
 from contextlib import AsyncExitStack
 from openai import OpenAI
 from dotenv import load_dotenv
-from net_util import is_private_url
 import asyncio
 import json
 import sys
