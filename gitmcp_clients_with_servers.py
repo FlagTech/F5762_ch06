@@ -26,7 +26,7 @@ class MCPClient:
             server_info: MCP 伺服器的連接資訊
         """
         if "url" in server_info[1]:
-            streams = await (
+            self.read, self.write = await (
                 self.exit_stack.enter_async_context(
                     sse_client(**server_info[1])
                 )
@@ -34,14 +34,14 @@ class MCPClient:
         else:
             server_params = StdioServerParameters(**server_info[1])
 
-            streams = await (
+            self.read, self.write = await (
                 self.exit_stack.enter_async_context(
                     stdio_client(server_params)
                 )
             )
         self.session = await (
             self.exit_stack.enter_async_context(
-                ClientSession(*streams)
+                ClientSession(self.read, self.write)
             )
         )
 

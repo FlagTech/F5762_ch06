@@ -38,7 +38,7 @@ class MCPClient:
                 print(f'已啟用 {server_info[0]} 遠端 MCP 伺服器')
                 print('-' * 20)
                 return
-            streams = await (
+            self.read, self.write = await (
                 self.exit_stack.enter_async_context(
                     sse_client(**server_info[1])
                 )
@@ -46,14 +46,14 @@ class MCPClient:
         else:
             server_params = StdioServerParameters(**server_info[1])
 
-            streams = await (
+            self.read, self.write = await (
                 self.exit_stack.enter_async_context(
                     stdio_client(server_params)
                 )
             )
         self.session = await (
             self.exit_stack.enter_async_context(
-                ClientSession(*streams)
+                ClientSession(self.read, self.write)
             )
         )
 
