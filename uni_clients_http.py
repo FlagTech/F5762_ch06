@@ -5,7 +5,6 @@ from mcp.client.streamable_http import streamablehttp_client
 from contextlib import AsyncExitStack
 from openai import OpenAI
 from dotenv import load_dotenv
-from net_util import is_private_url
 import asyncio
 import json
 import sys
@@ -41,17 +40,6 @@ class MCPClient:
                         streamablehttp_client(**server_info[1])
                     )
                 )
-            elif server_type == 'openai':
-                self.tools = [{
-                    'type': 'mcp',
-                    'server_label': server_info[0],
-                    'server_url': server_info[1]['url'],
-                    'require_approval': 'never', 
-                }]
-                print('-' * 20)
-                print(f'已啟用 {server_info[0]} 遠端 MCP 伺服器')
-                print('-' * 20)
-                return
         else:
             server_params = StdioServerParameters(**server_info[1])
 
@@ -75,11 +63,7 @@ class MCPClient:
             "type": "function",
             "name": tool.name,
             "description": tool.description,
-            "parameters": (
-                tool.inputSchema 
-                if "properties" in tool.inputSchema 
-                else tool.inputSchema | {'properties': {}}
-            )
+            "parameters": tool.inputSchema
         } for tool in tools]
         self.tool_names = [tool.name for tool in tools]
 

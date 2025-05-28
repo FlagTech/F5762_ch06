@@ -25,4 +25,4 @@ async def google_res(keyword: str, num_results: int = 5) -> str:
 
 if __name__ == "__main__":
     # 執行伺服器
-    mcp.run(transport='sse')
+    mcp.run(transport='streamable-http')
