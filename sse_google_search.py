@@ -24,5 +24,8 @@ async def google_res(keyword: str, num_results: int = 5) -> str:
     return content
 
 if __name__ == "__main__":
-    # 執行伺服器
-    mcp.run(transport='sse')
+    try:
+        # 執行伺服器
+        mcp.run(transport='sse')
+    except KeyboardInterrupt:
+        print("結束程式")

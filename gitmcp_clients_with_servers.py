@@ -1,6 +1,7 @@
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from mcp.client.sse import sse_client
+from mcp.client.streamable_http import streamablehttp_client
 from contextlib import AsyncExitStack
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -26,11 +27,19 @@ class MCPClient:
             server_info: MCP 伺服器的連接資訊
         """
         if "url" in server_info[1]:
-            self.read, self.write = await (
-                self.exit_stack.enter_async_context(
-                    sse_client(**server_info[1])
+            server_type = server_info[1].pop('type', 'sse')
+            if server_type == 'sse':
+                self.read, self.write = await (
+                    self.exit_stack.enter_async_context(
+                        sse_client(**server_info[1])
+                    )
                 )
-            )
+            elif server_type == 'http':
+                self.read, self.write, _ = await (
+                    self.exit_stack.enter_async_context(
+                        streamablehttp_client(**server_info[1])
+                    )
+                )
         else:
             server_params = StdioServerParameters(**server_info[1])
 

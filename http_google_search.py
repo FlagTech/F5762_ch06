@@ -1,7 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 from googlesearch import search
 
-mcp = FastMCP("google_search")
+mcp = FastMCP("google_search", streamable_http_path='/google_search')
 
 @mcp.tool()
 async def google_res(keyword: str, num_results: int = 5) -> str:
@@ -24,5 +24,8 @@ async def google_res(keyword: str, num_results: int = 5) -> str:
     return content
 
 if __name__ == "__main__":
-    # 執行伺服器
-    mcp.run(transport='streamable-http')
+    try:
+        # 執行伺服器
+        mcp.run(transport='streamable-http')
+    except KeyboardInterrupt:
+        print("結束程式")

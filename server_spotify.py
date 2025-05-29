@@ -100,5 +100,8 @@ async def spotify_now_playing() -> str:
     })  
 
 if __name__ == "__main__":
-    # 執行 MCP 伺服器
-    mcp.run(transport="stdio")
+    try:
+        # 執行伺服器
+        mcp.run(transport='stdio')
+    except KeyboardInterrupt:
+        print("結束程式")
