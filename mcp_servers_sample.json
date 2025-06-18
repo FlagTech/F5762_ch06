@@ -18,6 +18,14 @@
                 "server_google_search.py"
             ]
         },
+        "fetch": {
+            "command": "uvx",
+            "args": ["mcp-server-fetch"]
+        },
+        "pan-doc": {
+            "command": "uvx",
+            "args": ["pan-doc"]
+        },
         "sse_google_search": {
             "url": "http://localhost:8000/sse"
         },
@@ -25,9 +33,9 @@
             "type": "http",
             "url": "http://localhost:8000/mcp"
         },
-        "fetch": {
-            "command": "uvx",
-            "args": ["mcp-server-fetch"]
+        "gitmcp": {
+            "type": "openai",
+            "url": "https://gitmcp.io/idosal/git-mcp"
         },
         "spotify": {
             "command": "uv",
@@ -41,10 +49,6 @@
                 "SPOTIFY_CLIENT_ID": "你的 Client id",
                 "SPOTIFY_CLIENT_SECRET": "你的 Client secret"
             }
-        },
-        "gitmcp": {
-            "type": "openai",
-            "url": "https://gitmcp.io/idosal/git-mcp"
         }
     }
 }
